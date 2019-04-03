@@ -2,7 +2,8 @@
 var rover = {
   direction: 'N',
   positionX: 0,
-  positionY: 0
+  positionY: 0,
+  travelLog: []
 }
 // ======================
 
@@ -71,6 +72,7 @@ function moveForward(rover) {
       rover.positionX--;
       break;
   }
+  /* rover.travelLog.push([rover.positionX, rover.positionY, rover.direction]); */
   console.log("My coordinates are " + rover.positionX + "," + rover.positionY);
 }
 
@@ -89,9 +91,10 @@ function move(command, rover) {
         moveForward(rover);
         break;
     }
+    rover.travelLog.push([rover.positionX, rover.positionY, rover.direction]);
   }
-
+  console.log(rover.travelLog)
 }
 
 //Execution tests
-move('rffrfflfrff', rover);
+move('rrfffflfr', rover);
