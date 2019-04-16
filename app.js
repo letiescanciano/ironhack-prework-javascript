@@ -9,8 +9,8 @@ var rover = {
 
 // ======================
 function turnLeft(rover) {
-  console.log("turnLeft was called!");
-  console.log("I was facing " + rover.direction);
+  /* console.log("turnLeft was called!");
+  console.log("I was facing " + rover.direction); */
   switch (rover.direction) {
     case "N":
       rover.direction = 'W';
@@ -28,7 +28,7 @@ function turnLeft(rover) {
       rover.direction = rover.direction;
   }
 
-  console.log("Now I'm facing " + rover.direction);
+  /*  console.log("Now I'm facing " + rover.direction); */
 
 }
 
@@ -57,11 +57,9 @@ function turnRight(rover) {
 }
 
 function moveForward(rover) {
-  var canMove = checkBoundaries(rover);
-  console.log(canMove);
 
-  if (canMove === false) {
-    console.log("Turn before move. I Can't move forward");
+  if (!checkBoundaries(rover)) {
+    console.log("Turn before move. I can't move outside the perimeter");
     return;
   } else {
     console.log("moveForward was called");
@@ -79,17 +77,16 @@ function moveForward(rover) {
         rover.positionX--;
         break;
     }
-    canMove = true;
   }
 
-  /* rover.travelLog.push([rover.positionX, rover.positionY, rover.direction]); */
-  console.log("My coordinates are " + rover.positionX + "," + rover.positionY);
+
+  /* /* console.log("My coordinates are " + rover.positionX + "," + rover.positionY); */
 }
 
 function move(command, rover) {
 
   for (var i = 0; i < command.length; i++) {
-    console.log("iteration number" + i);
+
     switch (command[i]) {
       case 'r':
         turnRight(rover);
@@ -103,56 +100,48 @@ function move(command, rover) {
     }
     rover.travelLog.push([rover.positionX, rover.positionY, rover.direction]);
   }
-  console.log(rover.travelLog)
+  console.log(rover.travelLog);
 }
 
 
 function checkBoundaries(rover) {
 
   const x = rover.positionX;
-  const y = rover.positionX;
+  const y = rover.positionY;
   const dir = rover.direction;
 
+  /* console.log("[" + x + "," + y + "]" + dir); */
+
   if (y === 0) { //first row
-    if (dir === 'N') {
+    if (dir === 'N' || (x === 0 && dir === 'W') || (x === 9 && dir === 'E')) {
       return false;
-    } else if (x === 0 && dir === 'W') {
+    } else return true;
+  } else if (y === 9) { //last row
+    if (dir === 'S' || (x === 0 && dir === 'W') || (x === 9 && dir === 'E')) {
       return false;
-    } else if (x === 9 && dir === 'E') {
-      return false;
-    }
-  }
-  if (y === 9) { //last row
-    if (dir === 'S') {
-      return false;
-    } else if (x === 0 && dir === 'W') {
-      return false;
-    } else if (x === 9 && dir === 'E') {
-      return false;
-    }
-  }
-  if (x === 0) { //first column
+    } else return true;
+  } else if (x === 0) { //first column
     if (dir === 'W') {
       return false;
     } else if (y === 0 && dir === 'N') {
       return false;
     } else if (y === 9 && dir === 'S') {
       return false;
-    }
-  }
-  if (x === 9) { //last column
+    } else return true;
+  } else if (x === 9) { //last column
     if (dir === 'E') {
       return false;
     } else if (y === 0 && dir === 'N') {
       return false;
     } else if (y === 9 && dir === 'S') {
       return false;
-    }
-  }
+    } else return true;
+  } else
+    return true;
 
 }
 //Execution tests
-move('rffrfflfrff', rover);
+move('ffrfrf', rover);
 
 
 /* [ 
