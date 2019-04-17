@@ -119,6 +119,10 @@ function move(command, rover) {
 			case 'b':
 				moveBackward(rover);
 				break;
+			default:
+				console.log("I don't understand: " + command[i] + 'Please enter a valid command');
+				console.log(rover.travelLog);
+				return;
 		}
 		rover.travelLog.push([ rover.positionX, rover.positionY, rover.direction ]);
 	}
