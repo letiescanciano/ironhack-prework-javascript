@@ -1,11 +1,32 @@
 // Rover Object Goes Here
 var rover = {
-	direction: 'N',
-	positionX: 0,
-	positionY: 0,
+	direction: 'E',
+	positionX: 2,
+	positionY: 4,
 	travelLog: []
 };
+
+// Create planet Mars with  random obstacles
+
+function createPlanet(x, y) {
+	var grid = [];
+
+	for (i = 0; i < y; i++) {
+		var row = [];
+		for (j = 0; j < x; j++) {
+			if (j % 2 == 0 || i % 2 != 0) {
+				row.push(0);
+			} else {
+				row.push(1);
+			}
+		}
+		grid.push(row);
+	}
+	return grid;
+}
 // ======================
+var mars = createPlanet(10, 10);
+
 
 // ======================
 function turnLeft(rover) {
@@ -55,23 +76,49 @@ function turnRight(rover) {
 }
 
 function moveForward(rover) {
+
+
 	if (!checkBoundaries(rover, 'forward')) {
 		console.log("Turn before move. I can't move outside the perimeter");
 		return;
 	} else {
-		console.log('moveForward was called');
+		/* console.log('moveForward was called'); */
 		switch (rover.direction) {
 			case 'N':
-				rover.positionY--;
+				{
+					if (checkObstacles(rover, 'f')) { //check what's on mars next position by accessing mars[row][col]
+						rover.positionY--;
+					} else {
+						console.log("There's an obstacle on the way. Turn before moving");
+					}
+				}
 				break;
 			case 'S':
-				rover.positionY++;
+				{
+					if (checkObstacles(rover, 'f')) { //check what's on mars next position by accessing mars[row][col]
+						rover.positionY++;
+					} else {
+						console.log("There's an obstacle on the way. Turn before moving");
+					}
+				}
 				break;
 			case 'E':
-				rover.positionX++;
+				{
+					if (checkObstacles(rover, 'f')) { //check what's on mars next position by accessing mars[row][col]
+						rover.positionX++;
+					} else {
+						console.log("There's an obstacle on the way. Turn before moving");
+					}
+				}
 				break;
 			case 'W':
-				rover.positionX--;
+				{
+					if (checkObstacles(rover, 'f')) { //check what's on mars next position by accessing mars[row][col]
+						rover.positionX--;
+					} else {
+						console.log("There's an obstacle on the way. Turn before moving");
+					}
+				}
 				break;
 		}
 	}
@@ -120,11 +167,11 @@ function move(command, rover) {
 				moveBackward(rover);
 				break;
 			default:
-				console.log("I don't understand: " + command[i] + 'Please enter a valid command');
+				console.log('I don\'t understand:"' + command[i] + '". Please enter a valid command');
 				console.log(rover.travelLog);
 				return;
 		}
-		rover.travelLog.push([ rover.positionX, rover.positionY, rover.direction ]);
+		rover.travelLog.push([rover.positionX, rover.positionY, rover.direction]);
 	}
 	console.log(rover.travelLog);
 }
@@ -204,8 +251,101 @@ function checkBoundaries(rover, movingDir) {
 			break;
 	}
 }
+
+function checkObstacles(rover, moveDirection) {
+
+	var nextPosition = [];
+	switch (moveDirection) {
+		case 'f':
+			{
+				switch (rover.direction) {
+					case 'N':
+						{
+							nextPosition.push(rover.positionX);
+							nextPosition.push(rover.positionY - 1);
+							console.log('My coordinates are ' + rover.positionX + ',' + rover.positionY + " and my direction:'" + rover.direction + "'");
+							console.log("My next position will be: " + nextPosition);
+							/* 		console.log('Next Position: ' + nextPosition[0] + ',' + nextPosition[1]); */
+							console.log('Mars has on next position: ' + mars[nextPosition[1]][nextPosition[0]]);
+
+						}
+						break;
+					case 'S':
+						{
+							nextPosition.push(rover.positionX);
+							nextPosition.push(rover.positionY + 1);
+						}
+						break;
+					case 'E':
+						{
+							nextPosition.push(rover.positionX + 1);
+							nextPosition.push(rover.positionY);
+						}
+						break;
+					case 'W':
+						{
+							nextPosition.push(rover.positionX - 1);
+							nextPosition.push(rover.positionY);
+						}
+						break;
+				}
+				if (mars[nextPosition[1]][nextPosition[0]] === 0) { //check what's on mars next position by accessing mars[row][col]
+					return true;
+				} else {
+					console.log("There's an obstacle on the way. Turn before moving");
+					return false;
+				}
+			}
+		case 'b':
+			{
+				switch (rover.direction) {
+					case 'N':
+						{
+							nextPosition.push(rover.positionX);
+							nextPosition.push(rover.positionY + 1);
+							console.log('My coordinates are ' + rover.positionX + ',' + rover.positionY + " and my direction:'" + rover.direction + "'");
+							console.log("My next position will be: " + nextPosition);
+							/* 		console.log('Next Position: ' + nextPosition[0] + ',' + nextPosition[1]); */
+							console.log('Mars has on next position: ' + mars[nextPosition[1]][nextPosition[0]]);
+
+						}
+						break;
+					case 'S':
+						{
+							nextPosition.push(rover.positionX);
+							nextPosition.push(rover.positionY - 1);
+						}
+						break;
+					case 'E':
+						{
+							nextPosition.push(rover.positionX - 1);
+							nextPosition.push(rover.positionY);
+						}
+						break;
+					case 'W':
+						{
+							nextPosition.push(rover.positionX + 1);
+							nextPosition.push(rover.positionY);
+						}
+						break;
+				}
+				if (mars[nextPosition[1]][nextPosition[0]] === 0) { //check what's on mars next position by accessing mars[row][col]
+					return true;
+				} else {
+					console.log("There's an obstacle on the way. Turn before moving");
+					return false;
+				}
+			}
+		default:
+			break;
+	}
+
+}
+
 //Execution tests
-move('bbbbdsfellbb', rover);
+console.log(mars);
+
+move('bbffff', rover);
 
 /* [ 
   [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
